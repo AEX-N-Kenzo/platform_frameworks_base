@@ -48,17 +48,17 @@
   <string name="animation_fade">渐变</string>
   <string name="animation_slide_right">右侧滑入</string>
   <string name="animation_slide_left">左侧滑入</string>
-  <string name="animation_slide_right_no_fade">右侧滑入（无渐变）</string>
+  <string name="animation_slide_right_no_fade">右侧滑入 (无渐变)</string>
   <string name="animation_slide_left_no_fade">左侧滑入 (无渐变)</string>
   <string name="animation_slide_up">底部滑入</string>
   <string name="animation_slide_down">顶部滑入</string>
   <string name="animation_default">默认</string>
   <string name="animation_translucent">半透明</string>
-  <string name="animation_grow_shrink">缩放(顶部)</string>
+  <string name="animation_grow_shrink">缩放 (顶部)</string>
   <string name="animation_grow_shrink_center">缩放 (中心)</string>
-  <string name="animation_grow_shrink_bottom">缩放(底部)</string>
-  <string name="animation_grow_shrink_left">缩放(左侧)</string>
-  <string name="animation_grow_shrink_right">缩放(右侧)</string>
+  <string name="animation_grow_shrink_bottom">缩放 (底部)</string>
+  <string name="animation_grow_shrink_left">缩放 (左侧)</string>
+  <string name="animation_grow_shrink_right">缩放 (右侧)</string>
   <string name="action_null">空白</string>
   <!-- Message to show the user when their vendor image doesn't match the build's fingerprint. -->
   <string name="aex_system_error_manufacturer">检测到供应商映像不匹配。这通常意味着您的供应商映像是过时的。请确保您的供应商映像匹配 <xliff:g id="fingerprint">%1$s</xliff:g>。</string>
