@@ -26,6 +26,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Resources;
 import android.net.CaptivePortal;
 import android.net.ConnectivityManager;
 import android.net.ICaptivePortal;
@@ -74,6 +75,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.text.DecimalFormat;
+import java.util.Locale;
 
 /**
  * {@hide}
@@ -93,6 +96,10 @@ public class NetworkMonitor extends StateMachine {
     private static final String DEFAULT_USER_AGENT    = "Mozilla/5.0 (X11; Linux x86_64) "
                                                       + "AppleWebKit/537.36 (KHTML, like Gecko) "
                                                       + "Chrome/52.0.2743.82 Safari/537.36";
+
+    private static final String DEFAULT_HTTPS_URL_CN     = "https://captive.v2ex.co/generate_204";
+    private static final String DEFAULT_HTTP_URL_CN      = "http://captive.v2ex.co/generate_204";
+    private static final String DEFAULT_FALLBACK_URL_CN  = "http://g.cn/generate_204";
 
     private static final int SOCKET_TIMEOUT_MS = 10000;
     private static final int PROBE_TIMEOUT_MS  = 3000;
@@ -642,17 +649,25 @@ public class NetworkMonitor extends StateMachine {
         }
     }
 
+    private static boolean isChinese() {
+        Locale locale = Resources.getSystem().getConfiguration().locale;
+        return locale.getLanguage().startsWith(Locale.CHINESE.getLanguage())
+                && !locale.getCountry().equals("TW");
+    }
+
     private static String getCaptivePortalServerHttpsUrl(Context context) {
-        return getSetting(context, Settings.Global.CAPTIVE_PORTAL_HTTPS_URL, DEFAULT_HTTPS_URL);
+        return getSetting(context, Settings.Global.CAPTIVE_PORTAL_HTTPS_URL,
+                          isChinese() ? DEFAULT_HTTPS_URL_CN : DEFAULT_HTTPS_URL);
     }
 
     public static String getCaptivePortalServerHttpUrl(Context context) {
-        return getSetting(context, Settings.Global.CAPTIVE_PORTAL_HTTP_URL, DEFAULT_HTTP_URL);
+        return getSetting(context, Settings.Global.CAPTIVE_PORTAL_HTTP_URL,
+                          isChinese() ? DEFAULT_HTTP_URL_CN : DEFAULT_HTTP_URL);
     }
 
     private static String getCaptivePortalFallbackUrl(Context context) {
-        return getSetting(context,
-                Settings.Global.CAPTIVE_PORTAL_FALLBACK_URL, DEFAULT_FALLBACK_URL);
+        return getSetting(context,Settings.Global.CAPTIVE_PORTAL_FALLBACK_URL,
+                          isChinese() ? DEFAULT_FALLBACK_URL_CN : DEFAULT_FALLBACK_URL);
     }
 
     private static String getCaptivePortalUserAgent(Context context) {
