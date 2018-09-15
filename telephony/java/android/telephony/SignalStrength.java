@@ -21,7 +21,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.os.SystemProperties;
 import android.telephony.Rlog;
-import android.util.Log;
 import android.content.res.Resources;
 
 /**
@@ -52,6 +51,11 @@ public class SignalStrength implements Parcelable {
     /** @hide */
     //Use int max, as -1 is a valid value in signal strength
     public static final int INVALID = 0x7FFFFFFF;
+
+    private static final int RSRP_THRESH_TYPE_STRICT = 0;
+    private static final int[] RSRP_THRESH_STRICT = new int[] {-140, -115, -105, -95, -85, -44};
+    private static final int[] RSRP_THRESH_LENIENT = new int[] {-140, -128, -118, -108, -98, -44};
+
 
     private int mGsmSignalStrength; // Valid values are (0-31, 99) as defined in TS 27.007 8.5
     private int mGsmBitErrorRate;   // bit error rate (0-7, 99) as defined in TS 27.007 8.5
@@ -824,24 +828,26 @@ public class SignalStrength implements Parcelable {
          */
         int rssiIconLevel = SIGNAL_STRENGTH_NONE_OR_UNKNOWN, rsrpIconLevel = -1, snrIconLevel = -1;
 
-        int[] threshRsrp = Resources.getSystem().getIntArray(
-                com.android.internal.R.array.config_lteDbmThresholds);
-        if (threshRsrp.length != 6) {
-            Log.wtf(LOG_TAG, "getLteLevel - config_lteDbmThresholds has invalid num of elements."
-                    + " Cannot evaluate RSRP signal.");
+        int rsrpThreshType = Resources.getSystem().getInteger(com.android.internal.R.integer.
+                config_LTE_RSRP_threshold_type);
+        int[] threshRsrp;
+        if (rsrpThreshType == RSRP_THRESH_TYPE_STRICT) {
+            threshRsrp = RSRP_THRESH_STRICT;
         } else {
-            if (mLteRsrp > threshRsrp[5]) rsrpIconLevel = -1;
-            else if (mLteRsrp >= threshRsrp[4]) rsrpIconLevel = SIGNAL_STRENGTH_GREAT;
-            else if (mLteRsrp >= threshRsrp[3]) rsrpIconLevel = SIGNAL_STRENGTH_GOOD;
-            else if (mLteRsrp >= threshRsrp[2]) rsrpIconLevel = SIGNAL_STRENGTH_MODERATE;
-            else if (mLteRsrp >= threshRsrp[1]) rsrpIconLevel = SIGNAL_STRENGTH_POOR;
-            else if (mLteRsrp >= threshRsrp[0]) rsrpIconLevel = SIGNAL_STRENGTH_NONE_OR_UNKNOWN;
+            threshRsrp = RSRP_THRESH_LENIENT;
         }
         if (Resources.getSystem().getBoolean(
                 com.android.internal.R.bool.config_regional_lte_singnal_threshold)){
             threshRsrp = Resources.getSystem().getIntArray(
                     com.android.internal.R.array.lte_signal_strength_threshold);
         }
+
+        if (mLteRsrp > threshRsrp[5]) rsrpIconLevel = -1;
+        else if (mLteRsrp >= threshRsrp[4]) rsrpIconLevel = SIGNAL_STRENGTH_GREAT;
+        else if (mLteRsrp >= threshRsrp[3]) rsrpIconLevel = SIGNAL_STRENGTH_GOOD;
+        else if (mLteRsrp >= threshRsrp[2]) rsrpIconLevel = SIGNAL_STRENGTH_MODERATE;
+        else if (mLteRsrp >= threshRsrp[1]) rsrpIconLevel = SIGNAL_STRENGTH_POOR;
+        else if (mLteRsrp >= threshRsrp[0]) rsrpIconLevel = SIGNAL_STRENGTH_NONE_OR_UNKNOWN;
 
         if (Resources.getSystem().getBoolean(
                 com.android.internal.R.bool.config_regional_lte_singnal_threshold)){
