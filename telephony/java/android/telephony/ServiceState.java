@@ -242,10 +242,6 @@ public class ServiceState implements Parcelable {
 
     private boolean mIsUsingCarrierAggregation;
 
-    /* EARFCN stands for E-UTRA Absolute Radio Frequency Channel Number,
-     * Reference: 3GPP TS 36.104 5.4.3 */
-    private int mLteEarfcnRsrpBoost = 0;
-
     /**
      * get String description of roaming type
      * @hide
@@ -325,7 +321,6 @@ public class ServiceState implements Parcelable {
         mIsEmergencyOnly = s.mIsEmergencyOnly;
         mIsDataRoamingFromRegistration = s.mIsDataRoamingFromRegistration;
         mIsUsingCarrierAggregation = s.mIsUsingCarrierAggregation;
-        mLteEarfcnRsrpBoost = s.mLteEarfcnRsrpBoost;
     }
 
     /**
@@ -355,7 +350,6 @@ public class ServiceState implements Parcelable {
         mIsEmergencyOnly = in.readInt() != 0;
         mIsDataRoamingFromRegistration = in.readInt() != 0;
         mIsUsingCarrierAggregation = in.readInt() != 0;
-        mLteEarfcnRsrpBoost = in.readInt();
     }
 
     public void writeToParcel(Parcel out, int flags) {
@@ -382,7 +376,6 @@ public class ServiceState implements Parcelable {
         out.writeInt(mIsEmergencyOnly ? 1 : 0);
         out.writeInt(mIsDataRoamingFromRegistration ? 1 : 0);
         out.writeInt(mIsUsingCarrierAggregation ? 1 : 0);
-        out.writeInt(mLteEarfcnRsrpBoost);
     }
 
     public int describeContents() {
@@ -802,8 +795,7 @@ public class ServiceState implements Parcelable {
                 + " DefRoamInd=" + mCdmaDefaultRoamingIndicator
                 + " EmergOnly=" + mIsEmergencyOnly
                 + " IsDataRoamingFromRegistration=" + mIsDataRoamingFromRegistration
-                + " IsUsingCarrierAggregation=" + mIsUsingCarrierAggregation
-                + " mLteEarfcnRsrpBoost=" + mLteEarfcnRsrpBoost);
+                + " IsUsingCarrierAggregation=" + mIsUsingCarrierAggregation);
     }
 
     private void setNullState(int state) {
@@ -831,7 +823,6 @@ public class ServiceState implements Parcelable {
         mIsEmergencyOnly = false;
         mIsDataRoamingFromRegistration = false;
         mIsUsingCarrierAggregation = false;
-        mLteEarfcnRsrpBoost = 0;
     }
 
     public void setStateOutOfService() {
@@ -1006,7 +997,6 @@ public class ServiceState implements Parcelable {
         mIsEmergencyOnly = m.getBoolean("emergencyOnly");
         mIsDataRoamingFromRegistration = m.getBoolean("isDataRoamingFromRegistration");
         mIsUsingCarrierAggregation = m.getBoolean("isUsingCarrierAggregation");
-        mLteEarfcnRsrpBoost = m.getInt("LteEarfcnRsrpBoost");
     }
 
     /**
@@ -1037,7 +1027,6 @@ public class ServiceState implements Parcelable {
         m.putBoolean("emergencyOnly", Boolean.valueOf(mIsEmergencyOnly));
         m.putBoolean("isDataRoamingFromRegistration", Boolean.valueOf(mIsDataRoamingFromRegistration));
         m.putBoolean("isUsingCarrierAggregation", Boolean.valueOf(mIsUsingCarrierAggregation));
-        m.putInt("LteEarfcnRsrpBoost", mLteEarfcnRsrpBoost);
     }
 
     /** @hide */
@@ -1070,16 +1059,6 @@ public class ServiceState implements Parcelable {
     /** @hide */
     public void setIsUsingCarrierAggregation(boolean ca) {
         mIsUsingCarrierAggregation = ca;
-    }
-
-    /** @hide */
-    public int getLteEarfcnRsrpBoost() {
-        return mLteEarfcnRsrpBoost;
-    }
-
-    /** @hide */
-    public void setLteEarfcnRsrpBoost(int LteEarfcnRsrpBoost) {
-        mLteEarfcnRsrpBoost = LteEarfcnRsrpBoost;
     }
 
     /** @hide */
