@@ -311,7 +311,7 @@ public class RankingHelper implements RankingConfig {
 
     private static boolean tryParseBool(String value, boolean defValue) {
         if (TextUtils.isEmpty(value)) return defValue;
-        return Boolean.parseBoolean(value);
+        return Boolean.valueOf(value);
     }
 
     /**

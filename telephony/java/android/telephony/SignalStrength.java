@@ -1094,7 +1094,7 @@ public class SignalStrength implements Parcelable {
         m.putInt("LteRssnr", mLteRssnr);
         m.putInt("LteCqi", mLteCqi);
         m.putInt("TdScdma", mTdScdmaRscp);
-        m.putBoolean("isGsm", isGsm);
+        m.putBoolean("isGsm", Boolean.valueOf(isGsm));
     }
 
     /**
